@@ -25,6 +25,14 @@ def mes():
         '''Example 8 - ask retry or cancel '''
         messagebox.askretrycancel('Message Title','Message Body')
 
+#checkbox functions#
+def tog():
+        if chk_state.get()==0:
+                chk_label='Yes'
+                #chk_state.set(1)
+        else:
+                chk_label='No'
+                #chk_state.set(0)
 
 ##########
 ###MAIN###
@@ -52,13 +60,22 @@ c.grid(column=0, row=0)
 
 ##Checkbutton##
 ###############
+chk_state = IntVar()
+chk_label = 'No'
 
+chk = Checkbutton(window, text=chk_label, var=chk_state, onvalue=1, offvalue=0, command=tog)
 
-
+chk.grid(column=5, row=0)
 
 
 ##Radiobutton##
 ###############
+
+
+
+##Spinbox##
+###########
+
 
 
 
@@ -68,4 +85,4 @@ c.grid(column=0, row=0)
 txt = scrolledtext.ScrolledText(window, width=50, height=10)
 txt.insert(INSERT, 'Your text goes here...')
 
-txt.grid(column=0, row=1, columnspan=3)
+txt.grid(column=0, row=1, columnspan=6)
