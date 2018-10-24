@@ -9,10 +9,10 @@ def clear():
 	else:
 		_ = system('clear')
 		
-def shoot(time):
+def shoot(time, quarter_info, possession):
 	def display_time(time):
-		quarter = 4 - int(time/720)
-		return "Q" + str(quarter) + " " + str(datetime.timedelta(seconds=time%720))[2:]
+		#quarter = 4 - int(time/720)
+		return str(datetime.timedelta(seconds=time%720))[2:]
 	def select_shot():
 		attempt = random.randint(0,100)
 		if attempt <= 40:
@@ -22,17 +22,22 @@ def shoot(time):
 		else:
 			return 3
 	points = select_shot()
-	p_time = random.randint(3,24)
+	p_time = random.randint(4,24)
 	if time - p_time < 0:
 		p_time = time
 	if points > 0:
-		print(display_time(time - p_time) + "  Shot Made, +" + str(points) + "pts")
-	else:
-		print(display_time(time - p_time) + "  Shot Missed")
+		msg = display_time(time - p_time) + "  Shot Made, +" + str(points) + "pts"
+		if possession:
+			msg += " h"
+		else: msg += " a"
+		quarter_info[(4 - int((time-p_time)/720)) - 1].append(msg)
+		#print(msg)
+	#else:
+		#print(display_time(time - p_time) + "  Shot Missed")
 	return p_time, points
 	
 def create_away_team():
-	team_names = ["Lakers","Trail Blazers","Celtics","76ers"]
+	team_names = ["Lakers","Trail Blazers","Celtics","76ers","Clippers","Rockets","Warriors"]
 	return team_names[random.randint(0, len(team_names) - 1)]
 	
 def announce_winner(home_score, home_team, away_score, away_team):
@@ -43,17 +48,47 @@ def announce_winner(home_score, home_team, away_score, away_team):
 		winning_team = away_team
 	print("The " + winning_team + " Win!")
 
+def display_quarter(quarter_info):
+	for x in quarter_info:
+		if x.endswith("h"):
+			print(x[:-2])
+		else:
+			sp = ' ' * 37
+			print(sp + x[:-2])
+
+def display_header(h_team_name, h_score, a_team_name, a_score, quarter, quarter_info):
+	h_q_points, a_q_points = points_in_quarter(quarter_info)
+	d_title = ''
+	d_title += h_team_name + " " + str(h_q_points) + " [" + str(h_score) + "]   "
+	if len(d_title) < 29:
+		sp = ' ' * (29-len(d_title))
+		d_title = sp + d_title
+	d_title += "Q" + str(quarter) + "   "
+	d_title += "[" + str(a_score) + "] " + str(a_q_points) + " " + a_team_name
+	print(d_title)
+
+def points_in_quarter(quarter_info):
+	h_points, a_points = 0, 0
+	for x in quarter_info:
+		if x.endswith("a"):
+			a_points += int(x[19])
+		else:
+			h_points += int(x[19])
+	return h_points, a_points
+		
+
 #main game loop
 def basketball_game():
 	time = 2880
+	q_info = [[],[],[],[]]
 	possession = True
 	h_score, a_score = 0, 0
-	print("Wlecome to Python Basketball")
+	print("Welcome to Python Basketball")
 	h_team_name = str(input("Enter a team name: "))
 	a_team_name = create_away_team()
 	clear()
 	while time > 0:
-		p_time, p_score = shoot(time)
+		p_time, p_score = shoot(time, q_info, possession)
 		time -= p_time
 		if possession:
 			h_score += p_score
@@ -61,10 +96,24 @@ def basketball_game():
 		else:
 			a_score += p_score
 			possession = True
-			
-	print("[H] " + h_team_name + ": " + str(h_score) + " [A] " + a_team_name + ": "+ str(a_score))
+	
+	title = "[H] " + h_team_name + ": " + str(h_score) + " [A] " + a_team_name + ": "+ str(a_score)
+	print(title)
 	announce_winner(h_score, h_team_name, a_score, a_team_name)
-	input("Press Enter To End")
+	user_input = '-1'
+	while user_input != '':
+		user_input = input("Enter Quarter #, or press Enter to quit\n")
+		if int(user_input) > 0 and int(user_input) < 5:	
+			clear()
+			display_header(h_team_name,h_score,a_team_name,a_score,user_input,q_info[int(user_input) - 1])
+			display_quarter(q_info[int(user_input) - 1])
+	#input("Press Enter To End")
 		
+width = "60"
+height = "45"
+system("title Python Basketball")
+system("mode con cols="+ width +" lines="+ height)
+#system("mode con cols="+width)
+
 #main call
 basketball_game()
