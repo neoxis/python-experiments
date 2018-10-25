@@ -12,7 +12,6 @@ def clear():
 		
 def shoot(time, quarter_info, possession):
 	def display_time(time):
-		#quarter = 4 - int(time/720)
 		return str(datetime.timedelta(seconds=time%720))[2:]
 	def select_shot():
 		attempt = random.randint(0,100)
@@ -32,9 +31,6 @@ def shoot(time, quarter_info, possession):
 			msg += " h"
 		else: msg += " a"
 		quarter_info[(4 - int((time-p_time)/720)) - 1].append(msg)
-		#print(msg)
-	#else:
-		#print(display_time(time - p_time) + "  Shot Missed")
 	return p_time, points
 	
 def create_away_team():
@@ -135,16 +131,11 @@ def basketball_game():
 			display_header(h_team_name,h_score,a_team_name,a_score,user_input,q_info[int(user_input) - 1])
 			print('-'*shutil.get_terminal_size().columns)
 			display_quarter(q_info[int(user_input) - 1])
-	#input("Press Enter To End")
 		
 width = "60"
 height = "45"
 system("title Python Basketball")
 system("mode con cols="+ width +" lines="+ height)
-#system("mode con cols="+width)
-
-#main call
-#basketball_game()
 
 playing = True
 while playing:
