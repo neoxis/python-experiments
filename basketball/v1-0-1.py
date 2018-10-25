@@ -1,6 +1,7 @@
 import random
 import datetime
 from os import system, name
+import shutil
 
 #clear console screen
 def clear():
@@ -76,6 +77,28 @@ def points_in_quarter(quarter_info):
 			h_points += int(x[19])
 	return h_points, a_points
 		
+def display_quarter_totals(quarter_info):
+	ctr = shutil.get_terminal_size().columns
+	qtr_str = " Q1   Q2   Q3   Q4   TOTAL"
+	home_str, away_str = '',''
+	h_f_score, a_f_score = 0,0
+	for x in quarter_info:
+		h,a = points_in_quarter(x)
+		home_str += " " + str(h) + " |"
+		h_f_score += h
+		away_str += " " + str(a) + " |"
+		a_f_score += a
+	home_str += "  " + str(h_f_score)
+	away_str += "  " + str(a_f_score)
+	print(qtr_str.center(ctr))
+	print(home_str.center(ctr))
+	div = '-'*28
+	print(div.center(ctr))
+	print(away_str.center(ctr))
+
+def play_again():
+	answer = input("Play Again? [Y]es or [N]o\n").lower()
+	return (answer == 'yes' or answer == 'y') 
 
 #main game loop
 def basketball_game():
@@ -97,15 +120,20 @@ def basketball_game():
 			a_score += p_score
 			possession = True
 	
+	display_quarter_totals(q_info)
 	title = "[H] " + h_team_name + ": " + str(h_score) + " [A] " + a_team_name + ": "+ str(a_score)
 	print(title)
 	announce_winner(h_score, h_team_name, a_score, a_team_name)
 	user_input = '-1'
 	while user_input != '':
 		user_input = input("Enter Quarter #, or press Enter to quit\n")
+		if user_input == '':
+			break
 		if int(user_input) > 0 and int(user_input) < 5:	
 			clear()
+			display_quarter_totals(q_info)
 			display_header(h_team_name,h_score,a_team_name,a_score,user_input,q_info[int(user_input) - 1])
+			print('-'*shutil.get_terminal_size().columns)
 			display_quarter(q_info[int(user_input) - 1])
 	#input("Press Enter To End")
 		
@@ -116,4 +144,10 @@ system("mode con cols="+ width +" lines="+ height)
 #system("mode con cols="+width)
 
 #main call
-basketball_game()
+#basketball_game()
+
+playing = True
+while playing:
+	basketball_game()
+	playing = play_again()
+	clear()
