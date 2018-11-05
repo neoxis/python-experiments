@@ -55,8 +55,7 @@ def display_quarter(quarter_info):
 
 def display_header(h_team_name, h_score, a_team_name, a_score, quarter, quarter_info):
 	h_q_points, a_q_points = points_in_quarter(quarter_info)
-	d_title = ''
-	d_title += h_team_name + " " + str(h_q_points) + " [" + str(h_score) + "]   "
+	d_title = h_team_name + " " + str(h_q_points) + " [" + str(h_score) + "]   "
 	if len(d_title) < 29:
 		sp = ' ' * (29-len(d_title))
 		d_title = sp + d_title
@@ -74,8 +73,8 @@ def points_in_quarter(quarter_info):
 	return h_points, a_points
 		
 def display_quarter_totals(quarter_info):
-	ctr = shutil.get_terminal_size().columns
-	qtr_str = " Q1   Q2   Q3   Q4   TOTAL"
+	cols = shutil.get_terminal_size().columns
+	qtr_str = " Q1 + Q2 + Q3 + Q4 + TOTAL"
 	home_str, away_str = '',''
 	h_f_score, a_f_score = 0,0
 	for x in quarter_info:
@@ -86,15 +85,19 @@ def display_quarter_totals(quarter_info):
 		a_f_score += a
 	home_str += "  " + str(h_f_score)
 	away_str += "  " + str(a_f_score)
-	print(qtr_str.center(ctr))
-	print(home_str.center(ctr))
-	div = '-'*28
-	print(div.center(ctr))
-	print(away_str.center(ctr))
+	print(home_str.center(cols))
+	print(qtr_str.center(cols))
+	print(away_str.center(cols))
 
 def play_again():
 	answer = input("Play Again? [Y]es or [N]o\n").lower()
 	return (answer == 'yes' or answer == 'y') 
+
+def get_home_team():
+	temp = str(input("Enter a team name: "))
+	if len(temp) > 17:
+		temp = temp[:14] + "..."
+	return temp
 
 #main game loop
 def basketball_game():
@@ -103,7 +106,7 @@ def basketball_game():
 	possession = True
 	h_score, a_score = 0, 0
 	print("Welcome to Python Basketball")
-	h_team_name = str(input("Enter a team name: "))
+	h_team_name = get_home_team()
 	a_team_name = create_away_team()
 	clear()
 	while time > 0:
