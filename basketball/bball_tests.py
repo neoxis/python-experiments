@@ -1,12 +1,30 @@
 import player
 import util
+import unittest
+# RUN USING: python bball_test.py -v
 
 # ############ #
 # Player Tests #
 # ############ #
+class PlayerTests(unittest.TestCase):
+	pg = player.Player("Alexi", "Cameron", 3, "SG", 11, 14, 12, 12)
+	
+	def test_get_first_name(self):
+		self.assertEqual(self.pg.get_first_name(), "Alexi")
+		
+	def test_set_first_name(self):
+		test_name = "Brad"
+		self.pg.set_first_name(test_name)
+		self.assertEqual(test_name, self.pg.get_first_name())
 
-pg = player.Player("Alexi", "Cameron", 3, "SG", 11, 14, 12, 12)
-
+class UtilTests(unittest.TestCase):
+	def test_random_position(self):
+		self.assertEqual(util.random_position(1), "PG")
+	
+if __name__ == '__main__':
+	unittest.main()
+#pg = player.Player("Alexi", "Cameron", 3, "SG", 11, 14, 12, 12)
+'''
 print(pg.get_info())
 
 # get tests
@@ -36,3 +54,4 @@ print(pg.get_info())
 util.create_random_player()
 
 input("Press Enter to quit")
+'''
