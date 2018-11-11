@@ -1,2 +1,2 @@
-__pycache__/
+basketball/__pycache__/
 *.py[cod]
