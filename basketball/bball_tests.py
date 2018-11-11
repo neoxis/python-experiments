@@ -9,49 +9,57 @@ import unittest
 class PlayerTests(unittest.TestCase):
 	pg = player.Player("Alexi", "Cameron", 3, "SG", 11, 14, 12, 12)
 	
-	def test_get_first_name(self):
+	def test_get_set_first_name(self):
 		self.assertEqual(self.pg.get_first_name(), "Alexi")
-		
-	def test_set_first_name(self):
 		test_name = "Brad"
 		self.pg.set_first_name(test_name)
 		self.assertEqual(test_name, self.pg.get_first_name())
-
+		
+	def test_get_set_last_name(self):
+		self.assertEqual(self.pg.get_last_name(), "Cameron")
+		test_name = "Stiff"
+		self.pg.set_last_name(test_name)
+		self.assertEqual(test_name, self.pg.get_last_name())
+		
+	def test_get_set_number(self):
+		self.assertEqual(self.pg.get_number(), "3")
+		test_number = "7"
+		self.pg.set_number(test_number)
+		self.assertEqual(test_number, self.pg.get_number())
+		
+	def test_get_set_position(self):
+		self.assertEqual(self.pg.get_position(), "SG")
+		test_position = "PG"
+		self.pg.set_position(test_position)
+		self.assertEqual(test_position, self.pg.get_position())
+		
+	def test_get_set_outside_shooting(self):
+		self.assertEqual(self.pg.get_outside_shooting(), 11)
+		test_value = 13
+		self.pg.set_outside_shooting(test_value)
+		self.assertEqual(test_value, self.pg.get_outside_shooting())
+		
+	def test_get_set_outside_defense(self):
+		self.assertEqual(self.pg.get_outside_defense(), 12)
+		test_value = 13
+		self.pg.set_outside_defense(test_value)
+		self.assertEqual(test_value, self.pg.get_outside_defense())
+		
+	def test_get_set_inside_shooting(self):
+		self.assertEqual(self.pg.get_inside_shooting(), 14)
+		test_value = 13
+		self.pg.set_inside_shooting(test_value)
+		self.assertEqual(test_value, self.pg.get_inside_shooting())
+		
+	def test_get_set_inside_defense(self):
+		self.assertEqual(self.pg.get_inside_defense(), 12)
+		test_value = 13
+		self.pg.set_inside_defense(test_value)
+		self.assertEqual(test_value, self.pg.get_inside_defense())
+		
 class UtilTests(unittest.TestCase):
 	def test_random_position(self):
 		self.assertEqual(util.random_position(1), "PG")
 	
 if __name__ == '__main__':
 	unittest.main()
-#pg = player.Player("Alexi", "Cameron", 3, "SG", 11, 14, 12, 12)
-'''
-print(pg.get_info())
-
-# get tests
-print(pg.get_first_name())
-print(pg.get_last_name())
-print(pg.get_number())
-print(pg.get_position())
-
-print(pg.get_outside_shooting())
-print(pg.get_outside_defense())
-print(pg.get_inside_shooting())
-print(pg.get_inside_defense())
-
-# set tests
-pg.set_first_name("Brad")
-pg.set_last_name("Stiff")
-pg.set_number(7)
-pg.set_position("pg")
-
-pg.set_outside_shooting(13)
-pg.set_outside_defense(13)
-pg.set_inside_shooting(13)
-pg.set_inside_defense(13)
-
-print(pg.get_info())
-
-util.create_random_player()
-
-input("Press Enter to quit")
-'''
